@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="501.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.practica1.Controller.CitaController">
+   <children>
+      <Button fx:id="btnNuevaCita" layoutX="59.0" layoutY="460.0" mnemonicParsing="false" onAction="#onClickNueva" text="Nueva Cita" />
+      <Button fx:id="btnBorrarCita" layoutX="198.0" layoutY="460.0" mnemonicParsing="false" onAction="#onClickLBorrar" text="Borrar Cita" />
+      <Button fx:id="btnModificarCita" layoutX="343.0" layoutY="460.0" mnemonicParsing="false" onAction="#onClickModificar" text="Modificar Cita" />
+      <Button fx:id="btnLimpiar" layoutX="494.0" layoutY="460.0" mnemonicParsing="false" onAction="#onClickLimpiar" text="Limpiar" />
+      <Label layoutX="31.0" layoutY="33.0" text="Número de cita" />
+      <Label layoutX="330.0" layoutY="33.0" text="Fecha de cita" />
+      <Label layoutX="31.0" layoutY="92.0" text="DNI" />
+      <Label layoutX="31.0" layoutY="126.0" text="Nombre Paciene" />
+      <Label layoutX="31.0" layoutY="161.0" text="Direccion" />
+      <Label layoutX="31.0" layoutY="193.0" text="Telefono" />
+      <Label layoutX="33.0" layoutY="262.0" text="Especialidad" />
+      <TextField fx:id="txtNumCita" layoutX="133.0" layoutY="29.0" />
+      <TextField fx:id="txtDni" layoutX="144.0" layoutY="88.0" promptText="08912909T" />
+      <TextField fx:id="txtNombrePaciente" layoutX="144.0" layoutY="122.0" promptText="Pedro Gomez del Amo" />
+      <TextField fx:id="txtDireccion" layoutX="144.0" layoutY="157.0" promptText="C/ Quebrada, 1" />
+      <TextField fx:id="txtTelefono" layoutX="144.0" layoutY="189.0" promptText="678291982" />
+      <DatePicker fx:id="dateCita" layoutX="413.0" layoutY="29.0" />
+      <Button fx:id="btnCitasPendientes" layoutX="428.0" layoutY="101.0" mnemonicParsing="false" onAction="#btnVerCitas" text="Ver Citas Pendientes" />
+      <ComboBox fx:id="comboEspecialidad" layoutX="160.0" layoutY="258.0" prefWidth="150.0" />
+      <TableView fx:id="tableView" layoutX="51.0" layoutY="324.0" prefHeight="113.0" prefWidth="497.0">
+        <columns>
+          <TableColumn fx:id="columnCitaNum" prefWidth="150.0" text="Nº Cita" />
+          <TableColumn fx:id="ColumnFecha" prefWidth="199.0" text="Fecha" />
+            <TableColumn fx:id="ColumnEspecialidad" prefWidth="147.0" text="Especialidad" />
+        </columns>
+      </TableView>
+      <Label layoutX="186.0" layoutY="283.0" text="Citas del Paciente" textFill="RED">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
