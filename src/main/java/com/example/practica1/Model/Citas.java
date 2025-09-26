@@ -1,22 +1,23 @@
 package com.example.practica1.Model;
 
+import java.time.LocalDate;
+
 public class Citas {
 
     public int idCita;
     public Pacientes paciente;
     public Especialidades especialidad;
-    public String direccion;
-    public String telefono;
+    public LocalDate fecha;
+
 
     public Citas() {
     }
 
-    public Citas(int idCita, Pacientes paciente, Especialidades especialidad, String direccion, String telefono) {
+    public Citas(int idCita, Pacientes paciente, Especialidades especialidad, LocalDate fecha) {
         this.idCita = idCita;
         this.paciente = paciente;
         this.especialidad = especialidad;
-        this.direccion = direccion;
-        this.telefono = telefono;
+        this.fecha = fecha;
     }
 
     public int getIdCita() {
@@ -43,24 +44,16 @@ public class Citas {
         this.especialidad = especialidad;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public LocalDate getFecha() {
+        return fecha;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
     }
 
     @Override
     public String toString() {
-        return "Cita de " + paciente + " para " + especialidad + " en " + direccion;
+        return "Cita de " + paciente + " para " + especialidad + " con fecha: " + fecha;
     }
 }

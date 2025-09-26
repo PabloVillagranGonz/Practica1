@@ -46,27 +46,31 @@ public class LoginController {
     @FXML
     void onClickLogin(ActionEvent event) {
         String dni = txtDNI.getText().trim();
+        String password = txtPassword.getText().trim();
 
-        try {
-            if (citasDAO.obtenerDni(dni)) {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/practica1/cita.fxml"));
-                Parent root = fxmlLoader.load();
+        if (dni.isEmpty() && password.isEmpty()) {
+            AlertUtils.mostrarError("Debes introducir DNI y contraseña");
+        } else {
+            try {
+                if (citasDAO.validarLogin(dni, password)) {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/practica1/cita.fxml"));
 
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
+                    // Aquí le pasamos el DAO al controlador
+                    fxmlLoader.setControllerFactory(param -> new CitaController(citasDAO));
 
-            } /*else {
-                AlertUtils alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Login fallido");
-                alert.setHeaderText(null);
-                alert.setContentText("El DNI no existe en la base de datos.");
-                alert.showAndWait();
+                    Parent root = fxmlLoader.load();
+
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                } else {
+                    AlertUtils.mostrarError("Alguno de los dos datos no son correctos");
+                }
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
             }
-            */
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
         }
     }
+
 }

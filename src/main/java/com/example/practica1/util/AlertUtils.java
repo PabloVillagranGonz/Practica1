@@ -9,4 +9,10 @@ public class AlertUtils {
         alerta.setContentText(mensaje);
         alerta.show();
     }
+
+    public static void mostrarMensaje(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(mensaje);
+        alert.show();
+    }
 }

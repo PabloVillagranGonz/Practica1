@@ -6,15 +6,19 @@ public class Pacientes {
     public String dni;
     public String pass;
     public String nombre;
+    public String direccion;
+    public String telefono;
 
     public Pacientes() {
     }
 
-    public Pacientes(int idPaciente, String dni, String pass, String nombre) {
+    public Pacientes(int idPaciente, String dni, String pass, String nombre, String direccion, String telefono) {
         this.idPaciente = idPaciente;
         this.dni = dni;
         this.pass = pass;
         this.nombre = nombre;
+        this.direccion = direccion;
+        this.telefono = telefono;
     }
 
     public int getIdPaciente() {
@@ -47,6 +51,22 @@ public class Pacientes {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
     @Override
