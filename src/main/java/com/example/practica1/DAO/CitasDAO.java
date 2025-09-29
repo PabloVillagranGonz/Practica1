@@ -14,33 +14,14 @@ import java.util.Properties;
 
 public class CitasDAO {
 
-    private Connection conexion;
+    private final Connection conexion;
 
-    public void conectar() throws ClassNotFoundException, SQLException, IOException {
-        Properties configuration = new Properties();
-        try (InputStream in = getClass().getResourceAsStream("/com/example/practica1/configuration/database.properties")) {
-            if (in == null) {
-                throw new RuntimeException("Archivo database.properties no encontrado");
-            }
-            configuration.load(in);
-        }
-        String host = configuration.getProperty("host");
-        String port = configuration.getProperty("port");
-        String name = configuration.getProperty("name");
-        String username = configuration.getProperty("username");
-        String password = configuration.getProperty("password");
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conexion = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + name + "?serverTimezone=UTC",
-                username, password);
+    public CitasDAO(Connection conexion) {
+        this.conexion = conexion;
     }
 
-    public void desconectar() throws SQLException {
-        conexion.close();
-    }
 
     public boolean validarLogin(String dni, String pass) throws SQLException {
-        List<Pacientes> pacientes = new ArrayList<>();
         String sql = "SELECT * FROM pacientes WHERE Dni = ? AND pass = ?";
 
         try (PreparedStatement sentencia = conexion.prepareStatement(sql)) {
@@ -135,6 +116,7 @@ public class CitasDAO {
         }
     }
 
+
     public List<Citas> obtenerCitasPorPaciente(String dni) throws SQLException {
         List<Citas> lista = new ArrayList<>();
         String sql = "SELECT c.idCita, c.fecha, e.idEspecialidad, e.Tipo " +
@@ -163,4 +145,24 @@ public class CitasDAO {
         return lista;
     }
 
+
+    public void eliminarCita (int citas) throws SQLException {
+        String sql = "DELETE FROM Citas WHERE idCita = ?";
+
+        try (PreparedStatement ps = conexion.prepareStatement(sql)){
+            ps.setInt(1, citas);
+            ps.execute();
+        }
+    }
+
+
+    public void modificarCita(Citas cita) throws SQLException {
+        String sql = "UPDATE Citas SET fecha = ?, idEspecialidad = ? WHERE idCita = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setDate(1, java.sql.Date.valueOf(cita.fecha));
+            ps.setInt(2, cita.especialidad.idEspecialidad);
+            ps.setInt(3, cita.idCita);
+            ps.executeUpdate();
+        }
+    }
 }

@@ -16,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.awt.desktop.AboutEvent;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -73,6 +74,12 @@ public class CitaController {
 
     private final String dniLogeado;
 
+    private boolean creandoNuevaCita = false; // controlamos el estado del boton
+
+    private boolean editandoCita = false; // controlamos el estado del boton
+
+    Citas citaSeleccionada;
+
     public CitaController(CitasDAO citasDao, String dni) {
         this.citasDao = citasDao;
         this.dniLogeado = dni;
@@ -80,7 +87,24 @@ public class CitaController {
 
     @FXML
     void onClickLBorrar(ActionEvent event) {
+        citaSeleccionada = tableView.getSelectionModel().getSelectedItem();
 
+        if (citaSeleccionada == null) {
+            AlertUtils.mostrarError("Debes seleccionar una cita para poder eliminarla.");
+            return;
+        }
+
+        try {
+            citasDao.eliminarCita(citaSeleccionada.idCita); // Llamamos al método y la eliminamos
+
+            tableView.getItems().remove(citaSeleccionada); // Quitamos la fila de la tabla y refrescamos
+
+            AlertUtils.mostrarError("Cita eliminada correctamente.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            AlertUtils.mostrarError("Error al eliminar la cita.");
+        }
     }
 
     @FXML
@@ -88,10 +112,54 @@ public class CitaController {
         limpiarcampos();
     }
 
-
     @FXML
     void onClickModificar(ActionEvent event) {
 
+        if (!editandoCita) {
+            // Seleccionamos la cita de la tabla
+            citaSeleccionada = tableView.getSelectionModel().getSelectedItem();
+
+            if (citaSeleccionada == null) {
+                AlertUtils.mostrarError("Debes seleccionar una cita para modificarla.");
+                return;
+            }
+
+            // Rellenamos los campos de dicha cita
+
+            dateCita.setValue(citaSeleccionada.fecha);
+            comboEspecialidad.setValue(citaSeleccionada.especialidad.tipo);
+
+            desbloquearCampos();
+
+            editandoCita = true;
+            btnModificarCita.setText("Guardar cambios");
+        }
+
+        else {
+            if (dateCita.getValue()==null || comboEspecialidad.getValue()==null) {
+                AlertUtils.mostrarError("Debes rellenar los datos antes de guardar los cambios.");
+                return;
+            }
+
+            try {
+                // actualizamos los campos de la cita
+                citaSeleccionada.fecha = dateCita.getValue();
+                citaSeleccionada.especialidad = citasDao.obtenerEspecialidadPorTipo(comboEspecialidad.getValue());
+
+                citasDao.modificarCita(citaSeleccionada);
+
+                tableView.refresh();
+                AlertUtils.mostrarMensaje("Cita modificada correctamente.");
+
+                limpiarcampos();
+                editandoCita = false;
+                btnModificarCita.setText("Modificar Cita");
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                AlertUtils.mostrarError("Error al modificar la cita.");
+            }
+        }
     }
 
     @FXML
@@ -105,7 +173,6 @@ public class CitaController {
 
         tableView.getItems().setAll(citas);
     }
-    private boolean creandoNuevaCita = false; // controlamos el estado del boton
 
     @FXML
     void onClickNueva(ActionEvent event) {

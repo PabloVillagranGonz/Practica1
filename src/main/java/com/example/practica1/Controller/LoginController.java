@@ -1,5 +1,6 @@
 package com.example.practica1.Controller;
 
+import com.example.practica1.Conexion.Conexion;
 import com.example.practica1.DAO.CitasDAO;
 import com.example.practica1.util.AlertUtils;
 import javafx.fxml.FXML;
@@ -26,21 +27,19 @@ public class LoginController {
     @FXML
     private TextField txtPassword;
 
-    private final CitasDAO citasDAO;
+    private CitasDAO citasDAO;
+    private Conexion conectar;
 
-    public LoginController() {
-        citasDAO = new CitasDAO();
+    @FXML
+    public void initialize() {
+        conectar = new Conexion();
         try {
-            citasDAO.conectar();
-        } catch (SQLException sqle) {
+            conectar.conectar();
+            citasDAO = new CitasDAO(conectar.getConexion());
+        } catch (SQLException | ClassNotFoundException | IOException e) {
             AlertUtils.mostrarError("Error al conectar con la base de datos");
-        } catch (ClassNotFoundException cnfe) {
-            AlertUtils.mostrarError("Error al iniciar la aplicacion");
-        } catch (IOException ioe) {
-            AlertUtils.mostrarError("Error al cargar la configuracion");
+            e.printStackTrace();
         }
-
-        System.out.println(System.getProperty("user.home"));
     }
 
     @FXML
@@ -48,29 +47,37 @@ public class LoginController {
         String dni = txtDNI.getText().trim();
         String password = txtPassword.getText().trim();
 
-        if (dni.isEmpty() && password.isEmpty()) {
+        if (dni.isEmpty() || password.isEmpty()) {
             AlertUtils.mostrarError("Debes introducir DNI y contraseña");
-        } else {
-            try {
-                if (citasDAO.validarLogin(dni, password)) {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/practica1/cita.fxml"));
+            return;
+        }
 
-                    // Aquí le pasamos el DAO al controlador
-                    fxmlLoader.setControllerFactory(param -> new CitaController(citasDAO, dni));
+        try {
+            if (citasDAO.validarLogin(dni, password)) {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/practica1/cita.fxml"));
+                fxmlLoader.setControllerFactory(param -> new CitaController(citasDAO, dni));
+                Parent root = fxmlLoader.load();
 
-                    Parent root = fxmlLoader.load();
-
-                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                } else {
-                    AlertUtils.mostrarError("Alguno de los dos datos no son correctos");
-                }
-            } catch (SQLException | IOException e) {
-                e.printStackTrace();
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            } else {
+                AlertUtils.mostrarError("DNI o contraseña incorrectos");
             }
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
         }
     }
 
+    @FXML
+    void onClickRegister(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/practica1/register.fxml"));
+        Parent root = fxmlLoader.load();
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 }

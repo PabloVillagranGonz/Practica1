@@ -31,11 +31,11 @@
       <DatePicker fx:id="dateCita" layoutX="413.0" layoutY="29.0" />
       <Button fx:id="btnCitasPendientes" layoutX="428.0" layoutY="101.0" mnemonicParsing="false" onAction="#onClickVerCitas" text="Ver Citas Pendientes" />
       <ComboBox fx:id="comboEspecialidad" layoutX="160.0" layoutY="258.0" prefWidth="150.0" />
-      <TableView fx:id="tableView" layoutX="27.0" layoutY="324.0" prefHeight="113.0" prefWidth="532.0">
+      <TableView fx:id="tableView" layoutX="27.0" layoutY="324.0" prefHeight="113.0" prefWidth="555.0">
         <columns>
-          <TableColumn fx:id="columnCitaNum" prefWidth="150.0" text="Nº Cita" />
-          <TableColumn fx:id="ColumnFecha" prefWidth="199.0" text="Fecha" />
-            <TableColumn fx:id="ColumnEspecialidad" prefWidth="182.0" text="Especialidad" />
+          <TableColumn fx:id="columnCitaNum" prefWidth="174.0" text="Nº Cita" />
+          <TableColumn fx:id="ColumnFecha" prefWidth="187.0" text="Fecha" />
+            <TableColumn fx:id="ColumnEspecialidad" prefWidth="170.0" text="Especialidad" />
         </columns>
       </TableView>
       <Label layoutX="203.0" layoutY="293.0" text="Citas del Paciente">
