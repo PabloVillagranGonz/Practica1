@@ -56,7 +56,7 @@ public class LoginController {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/practica1/cita.fxml"));
 
                     // Aquí le pasamos el DAO al controlador
-                    fxmlLoader.setControllerFactory(param -> new CitaController(citasDAO));
+                    fxmlLoader.setControllerFactory(param -> new CitaController(citasDAO, dni));
 
                     Parent root = fxmlLoader.load();
 

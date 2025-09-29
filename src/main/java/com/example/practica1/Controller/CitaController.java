@@ -71,8 +71,11 @@ public class CitaController {
 
     private final CitasDAO citasDao; // DAO que nos pasa el LoginController
 
-    public CitaController(CitasDAO citasDao) {
+    private final String dniLogeado;
+
+    public CitaController(CitasDAO citasDao, String dni) {
         this.citasDao = citasDao;
+        this.dniLogeado = dni;
     }
 
     @FXML
@@ -91,6 +94,17 @@ public class CitaController {
 
     }
 
+    @FXML
+    void onClickVerCitas(ActionEvent event) throws SQLException {
+        List<Citas> citas = citasDao.obtenerCitasPorPaciente(dniLogeado);
+
+        if (citas.isEmpty()) {
+            AlertUtils.mostrarError("No tienes citas registradas.");
+            return;
+        }
+
+        tableView.getItems().setAll(citas);
+    }
     private boolean creandoNuevaCita = false; // controlamos el estado del boton
 
     @FXML
@@ -203,6 +217,7 @@ public class CitaController {
         txtNombrePaciente.clear();
         dateCita.setValue(null);
         comboEspecialidad.setValue(null);
+        tableView.getItems().clear();
     }
 
     private void desbloquearCampos() {
