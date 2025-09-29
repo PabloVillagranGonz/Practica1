@@ -3,6 +3,7 @@ package com.example.practica1.DAO;
 import com.example.practica1.Model.Citas;
 import com.example.practica1.Model.Especialidades;
 import com.example.practica1.Model.Pacientes;
+import com.example.practica1.util.HashUtils;
 import com.example.practica1.util.R;
 
 import java.io.IOException;
@@ -20,13 +21,13 @@ public class CitasDAO {
         this.conexion = conexion;
     }
 
-
     public boolean validarLogin(String dni, String pass) throws SQLException {
+        String hashedPass = HashUtils.sha256(pass);
         String sql = "SELECT * FROM pacientes WHERE Dni = ? AND pass = ?";
 
         try (PreparedStatement sentencia = conexion.prepareStatement(sql)) {
             sentencia.setString(1, dni);
-            sentencia.setString(2, pass);
+            sentencia.setString(2, hashedPass);
             try (ResultSet resultado = sentencia.executeQuery()) {
                 return resultado.next();
 

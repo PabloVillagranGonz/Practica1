@@ -4,6 +4,7 @@ import com.example.practica1.Model.Pacientes;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RegisterDAO {
@@ -12,6 +13,16 @@ public class RegisterDAO {
 
     public RegisterDAO(Connection conexion) {
         this.conexion = conexion;
+    }
+
+    public boolean existeDni(String dni) throws SQLException {
+        String sql = "SELECT 1 FROM pacientes WHERE Dni = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, dni);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
     }
 
     public void agregarPaciente(Pacientes paciente) throws SQLException {

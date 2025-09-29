@@ -4,6 +4,7 @@ import com.example.practica1.Conexion.Conexion;
 import com.example.practica1.DAO.RegisterDAO;
 import com.example.practica1.Model.Pacientes;
 import com.example.practica1.util.AlertUtils;
+import com.example.practica1.util.HashUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -58,13 +59,23 @@ public class RegisterController {
     @FXML
     void onClickRegister(ActionEvent event) throws SQLException {
         String dni = txtDNI.getText().trim();
-        String contraseña = txtPassword.getText().trim();
+        String contraseña = HashUtils.sha256(txtPassword.getText().trim());
         String nombre = txtNombre.getText().trim();
         String direccion = txtDireccion.getText().trim();
         String telefono = txtTelefono.getText().trim();
 
-        if (dni.isEmpty() || contraseña.isEmpty() || nombre.isEmpty() || direccion.isEmpty() || telefono.isEmpty()) {
+        if (dni.isEmpty() || txtPassword.getText().isEmpty() || nombre.isEmpty() || direccion.isEmpty() || telefono.isEmpty()) {
             AlertUtils.mostrarError("Debes rellenar todos los datos");
+            return;
+        }
+
+        if (dni.length() != 9) {
+            AlertUtils.mostrarError("El DNI debe tener 9 caracteres");
+            return;
+        }
+
+        if (registerDAO.existeDni(dni)) {
+            AlertUtils.mostrarError("El paciente con ese DNI ya existe");
             return;
         }
 
