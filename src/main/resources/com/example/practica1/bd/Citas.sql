@@ -5,7 +5,7 @@ USE CitasMedicas;
 CREATE TABLE Pacientes (
     idPaciente INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Dni VARCHAR(9) UNIQUE NOT NULL,
-    pass VARCHAR(256) NOT NULL,
+    pass VARCHAR(64) NOT NULL,
     nombre VARCHAR(50) NOT NULL,
     direccion VARCHAR(50) NOT NULL,
     telefono CHAR(9) NOT NULL
@@ -27,8 +27,8 @@ CREATE TABLE Citas (
 
 
 INSERT INTO Pacientes (idPaciente, Dni, pass, nombre, direccion, telefono) VALUES
- (1,"70278728T","1", "Fernando Gutierrez", "Avenida Salamanca", "687292213"),
- (2,"70278728L","1", "Clarita Gomez" , "Calle Tirso de Molina", "687990011");
+ (1,"70278728T", SHA2("123", 256), "Fernando Gutierrez", "Avenida Salamanca", "687292213"),
+ (2,"70278728L", SHA2("123", 256), "Clarita Gomez" , "Calle Tirso de Molina", "687990011");
 
 INSERT INTO Especialidades (idEspecialidad, Tipo) VALUES
  (1, "Cirugia"),

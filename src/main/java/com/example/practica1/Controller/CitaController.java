@@ -95,7 +95,7 @@ public class CitaController {
         }
 
         try {
-            citasDao.eliminarCita(citaSeleccionada.idCita); // Llamamos al método y la eliminamos
+            citasDao.eliminarCita(citaSeleccionada.idCita); // Llamamos al metodo y la eliminamos
 
             tableView.getItems().remove(citaSeleccionada); // Quitamos la fila de la tabla y refrescamos
 
@@ -125,7 +125,6 @@ public class CitaController {
             }
 
             // Rellenamos los campos de dicha cita
-
             dateCita.setValue(citaSeleccionada.fecha);
             comboEspecialidad.setValue(citaSeleccionada.especialidad.tipo);
 
@@ -151,7 +150,7 @@ public class CitaController {
                 tableView.refresh();
                 AlertUtils.mostrarMensaje("Cita modificada correctamente.");
 
-                limpiarcampos();
+                limpiarcamposModificar();
                 editandoCita = false;
                 btnModificarCita.setText("Modificar Cita");
 
@@ -160,6 +159,11 @@ public class CitaController {
                 AlertUtils.mostrarError("Error al modificar la cita.");
             }
         }
+    }
+
+    private void limpiarcamposModificar() {
+        dateCita.setValue(null);
+        comboEspecialidad.setValue(null);
     }
 
     @FXML

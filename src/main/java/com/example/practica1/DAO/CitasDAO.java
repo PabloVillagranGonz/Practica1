@@ -21,21 +21,6 @@ public class CitasDAO {
         this.conexion = conexion;
     }
 
-    public boolean validarLogin(String dni, String pass) throws SQLException {
-        String hashedPass = HashUtils.sha256(pass);
-        String sql = "SELECT * FROM pacientes WHERE Dni = ? AND pass = ?";
-
-        try (PreparedStatement sentencia = conexion.prepareStatement(sql)) {
-            sentencia.setString(1, dni);
-            sentencia.setString(2, hashedPass);
-            try (ResultSet resultado = sentencia.executeQuery()) {
-                return resultado.next();
-
-            }
-        }
-    }
-
-
     public int obtenerSiguienteIdCita() {
         String sql = "SELECT IFNULL(MAX(idCita), 0) + 1 AS siguiente FROM Citas";
 

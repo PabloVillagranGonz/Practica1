@@ -83,6 +83,16 @@ public class RegisterController {
 
         registerDAO.agregarPaciente(paciente);
         AlertUtils.mostrarMensaje("Paciente registrado correctamente");
+
+        limpiarCampos();
+    }
+
+    private void limpiarCampos() {
+        txtDNI.clear();
+        txtPassword.clear();
+        txtDireccion.clear();
+        txtTelefono.clear();
+        txtNombre.clear();
     }
 
     public void onClickAtras(ActionEvent event) throws IOException {

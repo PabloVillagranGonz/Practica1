@@ -2,6 +2,7 @@ package com.example.practica1.Controller;
 
 import com.example.practica1.Conexion.Conexion;
 import com.example.practica1.DAO.CitasDAO;
+import com.example.practica1.DAO.LoginDAO;
 import com.example.practica1.util.AlertUtils;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
@@ -27,15 +28,15 @@ public class LoginController {
     @FXML
     private TextField txtPassword;
 
-    private CitasDAO citasDAO;
-    private Conexion conectar;
+    private LoginDAO loginDAO;
 
+    private Conexion conectar;
     @FXML
     public void initialize() {
         conectar = new Conexion();
         try {
             conectar.conectar();
-            citasDAO = new CitasDAO(conectar.getConexion());
+            loginDAO = new LoginDAO(conectar.getConexion());
         } catch (SQLException | ClassNotFoundException | IOException e) {
             AlertUtils.mostrarError("Error al conectar con la base de datos");
             e.printStackTrace();
@@ -53,9 +54,9 @@ public class LoginController {
         }
 
         try {
-            if (citasDAO.validarLogin(dni, password)) {
+            if (loginDAO.validarLogin(dni, password)) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/practica1/cita.fxml"));
-                fxmlLoader.setControllerFactory(param -> new CitaController(citasDAO, dni));
+                fxmlLoader.setControllerFactory(param -> new CitaController(new CitasDAO(conectar.getConexion()), dni));
                 Parent root = fxmlLoader.load();
 
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -69,6 +70,7 @@ public class LoginController {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     void onClickRegister(ActionEvent event) throws IOException {
